@@ -31,37 +31,37 @@ var spread = function(a) {
 // 11
 
 const tree = {
-		value: 10, 
-		left: {
-				value: 
-		}, 
-		right: {
-		
-		}
+	value: 10, 
+	left: {
+			value: 
+	}, 
+	right: {
+	
+	}
 }
 
 function printTree(tree) {
-		let lastNode = false,
-				nodeArray = [];
-				
-		nodeArray.push(tree);
-		while( !lastNode ) {
-				let nextNode = nodeArray.shift() || {};
-				if ( nextNode.value ) {
-						console.log(nextNode.value);
-				} else {
-						lastNode = true;
-						break;
-				}
-
-				if ( nextNode.left ) {
-						nodeArray.push(node.left);
-				}
-				
-				if ( nextNode.right ) {
-						nodeArray.push(node.right);
-				}
+	let lastNode = false,
+			nodeArray = [];
+			
+	nodeArray.push(tree);
+	while( !lastNode ) {
+		let nextNode = nodeArray.shift() || {};
+		if ( nextNode.value ) {
+				console.log(nextNode.value);
+		} else {
+				lastNode = true;
+				break;
 		}
+
+		if ( nextNode.left ) {
+				nodeArray.push(node.left);
+		}
+		
+		if ( nextNode.right ) {
+				nodeArray.push(node.right);
+		}
+	}
 }
 
 
