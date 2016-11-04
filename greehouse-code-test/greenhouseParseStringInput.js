@@ -30,6 +30,8 @@ const jsonTemplateKeys = [
 const jsonMarker = '--JSON FORMAT BELOW--';
 const fullTemplate = 'All Opportunities\n';
 
+
+
 const splitString = (s) =>  s.split('\n');
 const splitEachComponent = (string) => string.split(', ');
 const reduceByState = (object, curr) => {
@@ -47,10 +49,7 @@ const reduceArrayToTemplate = ( temp, curr ) => {
 
 const getNestedPropertyByStringPath = (path, obj) => path.split('.').reduce((prev, curr) => prev[curr] || undefined, obj)
 const parseJSON = (json) => {
-	const splitJson = splitString(json);
-	const parsedJson = splitJson.map((j) => JSON.parse(j));
-
-	return parsedJson.reduce((parsed, curr) => {
+	return splitString(json).map((j) => JSON.parse(j)).reduce((parsed, curr) => {
 		parsed.push(jsonTemplateKeys.map((k) => getNestedPropertyByStringPath(k, curr)));
 		return parsed;
 	}, [])
@@ -68,7 +67,7 @@ const addStateSpecficTemplates = (returnTemplate, splitInput, states) => {
 	return returnTemplate;
 }
 
-const processInput = function(string, states) {
+const processInput = (string, states) => {
 	const indexOfJsonMarker = string.indexOf(jsonMarker);
 	const json = string.slice(indexOfJsonMarker + jsonMarker.length + 1);
 	string = string.slice(0, indexOfJsonMarker - 1);
