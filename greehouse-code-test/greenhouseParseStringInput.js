@@ -1,3 +1,5 @@
+"use strict";
+
 const input = `Lead Chef, Chipotle, Denver, CO, 10, 15
 Stunt Double, Equity, Los Angeles, CA, 15, 25
 Manager of Fun, IBM, Albany, NY, 30, 40
@@ -17,8 +19,16 @@ const templateKeys = {
 	min: 4,
 	max: 5
 };
-const fullTemplate = 'All Opportunities\n';
+const jsonTemplateKeys = [
+	'name',
+	'location.city',
+	'location.state',
+	'organization',
+	'pay.min',
+	'pay.max'
+];
 const jsonMarker = '--JSON FORMAT BELOW--';
+const fullTemplate = 'All Opportunities\n';
 
 const splitString = (s) =>  s.split('\n');
 const splitEachComponent = (string) => string.split(', ');
@@ -35,22 +45,41 @@ const reduceArrayToTemplate = ( temp, curr ) => {
 	return temp += keys.reduce(( tp, k ) => tp.replace(new RegExp(`<${k}>`, 'g'), curr[templateKeys[k]]), template) + '\n';
 };
 
+const getNestedPropertyByStringPath = (path, obj) => path.split('.').reduce((prev, curr) => prev[curr] || undefined, obj)
+const parseJSON = (json) => {
+	const splitJson = splitString(json);
+	const parsedJson = splitJson.map((j) => JSON.parse(j));
+
+	return parsedJson.reduce((parsed, curr) => {
+		parsed.push(jsonTemplateKeys.map((k) => getNestedPropertyByStringPath(k, curr)));
+		return parsed;
+	}, [])
+}
+
+const addStateSpecficTemplates = (returnTemplate, splitInput, states) => {
+	const inputByState = splitInput.reduce(reduceByState, {});
+	for ( let i = 0, l = states.length; i < l; i++ ) {
+		const state = states[i];
+		const stateSpecific = inputByState[state];
+		returnTemplate += `\n${state} Opportunities\n`;
+		returnTemplate = stateSpecific.reduce(reduceArrayToTemplate, returnTemplate);
+	}
+
+	return returnTemplate;
+}
+
 const processInput = function(string, states) {
 	const indexOfJsonMarker = string.indexOf(jsonMarker);
 	const json = string.slice(indexOfJsonMarker + jsonMarker.length + 1);
 	string = string.slice(0, indexOfJsonMarker - 1);
-	const parsedJson = JSON.parse(JSON.stringify(json));
 
-	const splitInput = splitString(string).map(splitEachComponent).sort((a,b) => a[templateKeys.title] > b[templateKeys.title]);1
-	const inputByState = splitInput.reduce(reduceByState, {})
+	const parsedJson = parseJSON(json);
+	const splitInput = splitString(string).map(splitEachComponent).concat(parsedJson).sort((a,b) => a[templateKeys.title] > b[templateKeys.title]);
 
-	var returnTemplate = splitInput.reduce(reduceArrayToTemplate, fullTemplate)
+	let returnTemplate = splitInput.reduce(reduceArrayToTemplate, fullTemplate);
 
-	for ( var i = 0, l = states.length; i < l; i++ ) {
-		const state = states[i];
-		const stateSpecific = inputByState[state];
-		returnTemplate += `\n${state} Opportunities\n`;
-		returnTemplate = stateSpecific.reduce(reduceArrayToTemplate, returnTemplate)
+	if ( states && Array.isArray(states) ) {
+		returnTemplate = addStateSpecficTemplates(returnTemplate, splitInput, states);
 	}
 
 	return returnTemplate;
