@@ -9,7 +9,7 @@ var config = {
   output: {
     path: path.join(__dirname, 'public'),
     publicPath: "/public/",
-    filename: 'bundle.js',
+    filename: 'bundle.js'
   },
   inline: true,
   watch: true,
@@ -20,9 +20,12 @@ var config = {
         loader: ExtractTextPlugin.extract('css!sass')
       },
       {
-        test: /\.js$/,
+        test: /.jsx?$/,
+        loader: 'babel-loader',
         exclude: /node_modules/,
-        loaders: ['babel'],
+        query: {
+          presets: ['es2015', 'react']
+        }
       }
     ],
   },
