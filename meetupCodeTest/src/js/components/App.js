@@ -1,14 +1,14 @@
 import React from 'react';
 import "../../scss/app.scss";
-import { Applications } from "./Applications";
-import { Quotes } from "./Quotes";
+import { HeaderContainer } from "../containers/HeaderContainer";
+import { ResultsContainer } from "../containers/ResultsContainer";
 
 export const App = () => {
 	return (
 		<div className="main">
 			<div className="container">
-				<Applications />
-				<Quotes />
+				<HeaderContainer />
+				<ResultsContainer />
 			</div>
 		</div>
 	);
