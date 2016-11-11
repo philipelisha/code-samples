@@ -4,6 +4,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var config = {
   context: path.join(__dirname, 'src/js'),
   entry: [
+    'babel-polyfill',
     './index.js',
   ],
   output: {
@@ -17,13 +18,18 @@ var config = {
   module: {
     loaders: [
       {
-        test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('css!sass')
+        loader: 'babel',
+        test: /\.jsx?$/,
+        exclude: [
+          path.resolve(__dirname, "node_modules")
+        ],
+        query: {
+          presets: ['es2015', 'stage-0', 'react']
+        }
       },
       {
-        test: /\.js?$/,
-        exclude: /(node_modules)/,
-        loader: 'babel'
+        test: /\.scss$/,
+        loader: ExtractTextPlugin.extract('css!sass')
       }
     ],
   },
