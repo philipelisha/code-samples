@@ -13,7 +13,7 @@ export class GroupSearchForm extends Component {
 		const { search } = this.props;
 		return (
 			<div className="group-search-form">
-				<button onClick={search}>RUN SEARCH</button>
+				<button onClick={() => search("","")}>RUN SEARCH</button>
 			</div>
 		);
 	}

@@ -3,11 +3,11 @@ import { search } from '../actions';
 import { Results } from '../components/Results';
 
 const mapStateToProps = (state) => {
-	const { results, error, loading } = state;
+	const { results, error, loading } = state.rootReducer;
 	return {
-		results,
-		error,
-		loading
+		results: results,
+		error: error,
+		loading: loading
 	}
 }
 

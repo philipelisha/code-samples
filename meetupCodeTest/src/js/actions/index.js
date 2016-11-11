@@ -14,45 +14,66 @@ export const ERROR = 'ERROR';
  * action creators
  */
 
+
 export const resetResults = () => {
 	return {
-		type: RESET_RESULTS
+		type: 'RESET_RESULTS'
 	}
 };
 
-function receiveGroups(json) {
+export const receiveGroups = ( json ) => {
+	debugger;
 	return {
-		type: RECEIVE_GROUPS,
+		type: 'RECEIVE_GROUPS',
 		results: Array.from(json)
 	}
-}
+};
 
-function resultsError(json) {
+const resultsError = ( json ) => {
 	return {
-		type: ERROR,
-		error: json.errors.reduce( ( msg, err ) => msg += err.message, "")
+		type: 'ERROR',
+		error: json.message
+	}
+};
+
+const getRequest = (url, headers) => {
+	return fetch(url, headers)
 }
 
-function fetchGroups(query,zip) {
+async function fetchGroups( query, zip ) {
 	return dispatch => {
+		const headers = new Headers();
+		const myHeaders = {
+			method: 'GET', 
+			headers: headers, 
+			mode: 'no-cors'
+		};
+
 		const apiKey = "77c722a1546943357c1d22263fb1e";
 		const zipQuery = zip ? `&zip=${zip}` : "";
-		const queryText = query ? `&text=${query}` : "";
+		const queryText = query ? `&text=${query}` : "&text=javascript";
 		const requestUrl = `https://api.meetup.com/find/groups?key=${apiKey}&photo-host=public${zipQuery}&page=10${queryText}&sign=true`;
 
 		dispatch(resetResults());
-		return fetch(requestUrl)
-			.catch(json => dispatch(resultsError(json)))
-			.then(json => dispatch(receiveGroups(json)))
+		// return fetch(requestUrl, myHeaders)
+			// .then(json => dispatch(receiveGroups(json)))
+			// .catch(json => dispatch(resultsError(json)))
+		try {
+			const results = await getRequest(requestUrl, myHeaders);
+			dispatch(receiveGroups(results))
+		} catch(error) {
+			console.error(error);
+			dispatch(resultsError(json))
+		}
 	}
-}
+};
 
-function shouldFetch(state) {
-	const results = state.resultsList;
-	return results.loading;
-}
+const shouldFetch = ( state ) => {
+	const results = state.rootReducer;
+	return !results.loading;
+};
 
-export function search(query, zip) {
+export const search = ( query, zip ) => {
 	return (dispatch, getState) => {
 		if ( shouldFetch(getState()) ) {
 			return dispatch(fetchGroups(query, zip))

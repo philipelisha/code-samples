@@ -12,6 +12,7 @@ var config = {
     filename: 'bundle.js'
   },
   inline: true,
+  devtool: 'sourcemap',
   watch: true,
   module: {
     loaders: [
@@ -20,12 +21,9 @@ var config = {
         loader: ExtractTextPlugin.extract('css!sass')
       },
       {
-        test: /.jsx?$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/,
-        query: {
-          presets: ['es2015', 'react']
-        }
+        test: /\.js?$/,
+        exclude: /(node_modules)/,
+        loader: 'babel'
       }
     ],
   },
