@@ -1,0 +1,42 @@
+.group-search-form {
+	background:#ed1c40;
+	padding:30px 0;
+	position:fixed;
+	top:0;
+	left:0;
+	width:100%;
+	z-index: 1;
+
+	.group-search-form-inner {
+		width:80%;
+		position:relative;
+		margin:0 auto;
+	}
+
+	h2 {
+		color:#fff;
+		font-size:2.5em;
+		text-align: center;
+		margin:0 0 15px;
+	}
+
+	.query-input {
+		width:300px;
+	}
+
+	.zip-input {
+		width:150px;
+	}
+
+	.hidden {
+		display:none;
+	}
+
+	input {
+		height:30px;
+		padding:5px 10px;
+		margin-right:10px;
+		font-size:1.0em;
+		color:#333;
+	}
+}

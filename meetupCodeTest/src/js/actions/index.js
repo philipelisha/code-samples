@@ -1,6 +1,4 @@
-import { polyfill } from "es6-promise";
-polyfill();
-import fetch from 'isomorphic-fetch';
+import fetch from 'fetch-jsonp';
 
 /*
  * action types
@@ -22,10 +20,9 @@ export const resetResults = () => {
 };
 
 export const receiveGroups = ( json ) => {
-	debugger;
 	return {
 		type: 'RECEIVE_GROUPS',
-		results: Array.from(json)
+		results: json
 	}
 };
 
@@ -36,35 +33,31 @@ const resultsError = ( json ) => {
 	}
 };
 
-const getRequest = (url, headers) => {
-	return fetch(url, headers)
-}
-
-async function fetchGroups( query, zip ) {
+/*async*/ function fetchGroups( query, zip ) {
 	return dispatch => {
 		const headers = new Headers();
 		const myHeaders = {
 			method: 'GET', 
-			headers: headers, 
-			mode: 'no-cors'
+			headers: headers
 		};
 
 		const apiKey = "77c722a1546943357c1d22263fb1e";
 		const zipQuery = zip ? `&zip=${zip}` : "";
-		const queryText = query ? `&text=${query}` : "&text=javascript";
-		const requestUrl = `https://api.meetup.com/find/groups?key=${apiKey}&photo-host=public${zipQuery}&page=10${queryText}&sign=true`;
+		const queryText = query ? `&text=${query}` : "";
+		const requestUrl = `https://api.meetup.com/find/groups?key=${apiKey}&photo-host=public${zipQuery}&page=20${queryText}&sign=true`;
 
 		dispatch(resetResults());
-		// return fetch(requestUrl, myHeaders)
-			// .then(json => dispatch(receiveGroups(json)))
-			// .catch(json => dispatch(resultsError(json)))
-		try {
-			const results = await getRequest(requestUrl, myHeaders);
+		return fetch(requestUrl, myHeaders)
+			.then(response => response.json())
+			.then(json => dispatch(receiveGroups(json.data)))
+			.catch(json => dispatch(resultsError(json)))
+		/*try {
+			const results = await fetch(requestUrl, myHeaders);
 			dispatch(receiveGroups(results))
 		} catch(error) {
 			console.error(error);
-			dispatch(resultsError(json))
-		}
+			dispatch(resultsError(error))
+		}*/
 	}
 };
 

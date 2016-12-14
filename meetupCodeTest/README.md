@@ -1,4 +1,23 @@
-## Overview
+## Getting Started
+
+### Overview
+
+The app is built using a react/redux combo. I'm using webpack to manage compiling of the JavaScript and Sass and to bundle everything together. SASS modules are imported into the relevant components. I'm using fetch-jsonp to fetch the data from the API. 
+
+### `npm install`
+
+Installs all dependancies and dev dependancies.
+
+### `npm start`
+
+Runs the app in development mode.<br>
+Open [http://localhost:8080](http://localhost:8080) to view it in the browser.
+
+The page will not reload if you make edits.<br>
+You will see the build errors and warnings in the terminal.
+
+
+## Exercise Directions
 
 For this exercise, you will build a small web application for Meetup to demonstrate your web engineering expertise.
 
@@ -6,7 +25,7 @@ We do not expect you to spend any more than three hours on this exercise. While 
 
  
 
-## Specification
+### Specification
 
 We would like for you to build an interface which lets a user search for nearby Meetup groups using our public API. The search results should include specific information about each group. Clicking on a group’s name should take you to the group’s page on Meetup.com.
 
@@ -16,7 +35,7 @@ The page should include two sections: a search form and the search results. The 
 
  
 
-## Search Form Requirements:
+### Search Form Requirements:
 
 The search form should have two inputs: an input for your search string, and an input for the user to enter a zip code (which is optional). The entire page should not reload when a search is performed. The request should only hit the API if the user input is valid.
 
@@ -47,14 +66,10 @@ Member Count (use who in the response for bonus points!)
 Photo (if available)
 Next Event (if one is scheduled)
  
-
 Clicking on the name of the group should take you to the group’s page on meetup.com.
-
- 
 
 If you find yourself with extra time, for bonus points, implement a solution so the user can fetch the next page of search results for their query. This can be a “Load More” button, an infinite scroll, pagination, or another method of your choice.
 
- 
 
 ## Evaluation
 
@@ -71,11 +86,7 @@ How maintainable is your solution? Is the JavaScript written in a unit testable 
 We may follow-up with more questions, so be prepared to discuss how you would continue to maintain and build atop your submission.
 
 We will review your submission in the latest production version of Google Chrome.
-
  
-
- 
-
 ## Submission
 
 Bundle your complete solution into a compressed (.zip) file. Please include a README.md file with a high level overview of your submission, notes, as well as any other information we may need in order to build or run your web application.
